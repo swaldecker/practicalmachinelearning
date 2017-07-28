@@ -90,11 +90,12 @@ dev.off()
 ```
 
 ## Algorithms
-I decided to start with the random forest algorithm, since this algorithm was mentioned in the paper by Velloso et. al. I divided the training set into a smaller training set and a validation set. For the validation set, I chose the data associated with user_name = charles. 
+I decided to start with the random forest algorithm, since this algorithm was mentioned in the paper by Velloso et. al. I divided the training set into a smaller training set and a validation set. For the validation set, I chose the data associated with user_name = charles. This corresponds to a leave-one-subject-out
+test.
 
-With the new training set, I ordered the rows chronologically, which also had the effect of clustering the username and classe variables. I performed 5-fold cross-validation with the random forest algorithm. My idea behind choosing k = 5, was that there are five participants, and these were already arranged in blocks. So, each insample "testing" set would contain data mostly from one participant.  
+With the new training set, I ordered the rows chronologically, which also had the effect of clustering the username and classe variables. I performed 5-fold cross-validation with the random forest algorithm. My idea behind choosing k = 5, was that there are five participants, and these were already arranged in blocks. So, each in-sample "testing" set would contain data mostly from one participant.  
 
-In the final model, I achieved about 99.3% accuracy, but when predicting on the validation set, I got terrible accuracy, about 54%. I tried using a different participant for the validation set (adelmo), and I got even worse results. I also tried using the bootstrapping method of cross-validation but obtained only slightly better results. Finally, I tried using method = "rpart" and method = "gbm", but these did not perform as well as the random forest algorithm. The results of the final model as well as the confusion matrix for the validation set are shown below. 
+In the final model, I achieved about 99.3% accuracy, but when predicting on the validation set, I got an accuracy of about 54%. I tried using a different participant for the validation set (adelmo), and I got even lower accuracy. I also tried using the bootstrapping method of cross-validation but obtained only slightly better results. Finally, I tried using method = "rpart" and method = "gbm", but these did not perform as well as the random forest algorithm. The results of the final model as well as the confusion matrix for the validation set are shown below. 
 
 
 
@@ -195,9 +196,9 @@ rf_pred <- predict( rf_model, newdata = valid )
 
 I have also read that the random forest algorithm doesn't perform well when there are many predictors, as there is a problem with overfitting. I did an analysis with only 16 predictors, but I got poorer results. 
 
-I suspect one of the main issues is that the raw data are not the best predictors. When I did the analysis using the statistical quantities, I was able to get an accuracy of 66% on the validation set, which is still not great but much better. 
+I suspect one of the main issues is that the raw data are not the best predictors. When I did the analysis using the statistical quantities, I was able to get an accuracy of 66% on the validation set, which is still not great but much better. This result is closer to the 78% accuracy that Velloso et. al report for their leave-one-subject-out test. They argue that the relatively low accuracy for this test stems from a small data set and too few subjects.
 
-Based on my results, I expect the out-of-sample error to be rather large, about 50%. On the other hand, when I resample within the training set with the 5 participants and create the new confusion matrix, I still get over 99% accuracy. Since in the out of sample testing set there is only one data point associated with "charles" (the participant I used for the validation set), perhaps the accuracy will be significantly better than 50%. 
+Based on my leave-one-subject-out test results, I expect the out-of-sample error to be rather large, about 50%. On the other hand, when I resample within the training set with the 5 participants and create the new confusion matrix, I still get over 99% accuracy. Since in the out of sample testing set there is only one data point associated with "charles" (the participant I used for the validation set), perhaps the accuracy will be significantly better than 50%. 
 
 ## Bibliography
 Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. Qualitative Activity Recognition of Weight Lifting Exercises. Proceedings of 4th International Conference in Cooperation with SIGCHI (Augmented Human '13) . Stuttgart, Germany: ACM SIGCHI, 2013.
